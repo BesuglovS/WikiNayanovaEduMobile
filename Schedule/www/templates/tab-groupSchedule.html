@@ -1,0 +1,41 @@
+<ion-view view-title="Group Schedule">
+  <ion-content class="padding">
+
+    <div class="list card">
+      <div class="item item-body">
+          <table>
+              <tr>
+                  <td>
+                      Date <input type="date" ng-model="data.ScheduleDate" ng-change="updateSchedule()">
+                  </td>
+                  <td>
+                      Group
+                      <select ng-model="data.SelectedGroup"    
+                              ng-options="group.Name for group in GroupList"                          
+                              ng-change="updateSchedule()">                          
+                      </select>
+                  </td>
+              </tr>
+          </table>
+      </div>
+    </div>
+
+    <div class="list card">
+      <div class="item item-divider">
+          {{data.SelectedGroup.Name}} - {{data.ScheduleDate | date:'dd.MM.yyyy'}}
+      </div>
+      <div class="item item-body">
+          <ion-list>
+              <ion-item ng-repeat="lesson in Schedule.Lessons" class="item-text-wrap">
+                  {{lesson.discName}}<br />
+                  {{lesson.FIO}}<br />
+                  {{lesson.audName}}<br />
+                  <div ng-show="data.SelectedGroup.Name !== lesson.groupName">                      
+                      ({{lesson.groupName}})
+                  </div>
+              </ion-item>
+          </ion-list>
+      </div>
+    </div>    
+  </ion-content>
+</ion-view>
