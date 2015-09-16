@@ -44,11 +44,6 @@ angular.module('starter.controllers', [])
     );
 
     $scope.data = {};
-
-    $scope.weekCount = 18;    
-    $scope.getNumber = function (num) {
-        return new Array(num);
-    }
     // groupScheduleCtrl    
 }])
 
@@ -59,6 +54,8 @@ angular.module('starter.controllers', [])
             $scope.data.ScheduleWeek = 1;
         }
 
+        $scope.dowAbbr = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
         var week = $scope.data.ScheduleWeek;
         var teacherId = $scope.data.SelectedTeacher.TeacherId;
 
@@ -66,7 +63,26 @@ angular.module('starter.controllers', [])
 
         $http.get(weekScheduleUrl).
             then(function (response) {
-                $scope.Schedule = response.data;
+                var result = new Array();
+
+                result.FIO = $scope.data.SelectedTeacher.FIO;
+
+                for (i = 1; i <= 7; i++) {
+                    result[i] = new Array();
+                    result[i].Lessons = new Array();
+                    result[i].doww = $scope.dowAbbr[i] + ' - ' + week;                    
+                }
+
+                response.data.forEach(function (element, index) {
+                    var dateParts = element.Date.split("-");
+                    element.Date = dateParts[2] + '.' + dateParts[1] + '.' + dateParts[0];
+                    element.Time = element.Time.substring(0, 5);
+
+                    result[element.dow].date = element.Date;
+
+                    result[element.dow].Lessons.push(element);
+                });
+                $scope.Schedule = result;
             }, function (response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
@@ -89,6 +105,11 @@ angular.module('starter.controllers', [])
     );
 
     $scope.data = {};
+
+    $scope.dowCount = 7;
+    $scope.getNumber = function (num) {
+        return new Array(num);
+    }
     // teacherScheduleCtrl
 }])
 

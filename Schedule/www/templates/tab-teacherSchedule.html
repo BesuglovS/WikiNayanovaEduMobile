@@ -1,4 +1,4 @@
-<ion-view view-title="Teacher Schedule">
+<ion-view view-title="{{Schedule.FIO}}">
     <ion-content class="padding">
 
         <div class="list card">
@@ -23,21 +23,27 @@
             </div>
         </div>
 
-        <div class="list card">
-            <div class="item item-divider">
-                {{data.SelectedTeacher.FIO}} - {{data.ScheduleWeek}}
-            </div>
-            <div class="item item-body">
-                <ion-list>
-                    <ion-item ng-repeat="lesson in Schedule" class="item-text-wrap">
-                        {{lesson.Date}}<br />
-                        {{lesson.Time}}<br />
-                        {{lesson.disciplineName}}<br />
-                        {{lesson.groupName}}<br />
-                        {{lesson.audName}}
-                    </ion-item>
-                </ion-list>
-            </div>
+        <div ng-repeat="i in getNumber(dowCount) track by $index" >
+            <div ng-show="Schedule[$index+1].Lessons.length" class="list card">
+                <div class="item item-divider">
+                    {{Schedule[$index+1].doww}} ({{Schedule[$index+1].date}})
+                </div>
+                <div class="item item-body">
+                    <ion-list>
+                        <ion-item ng-repeat="lesson in Schedule[$index+1].Lessons" class="item-text-wrap">
+                            <div class="row">
+                                <div class="col col-20"><h2>{{lesson.Time}}</h2></div>
+                                <div class="col">
+                                    {{lesson.disciplineName}}<br />
+                                    {{lesson.groupName}}<br />
+                                    {{lesson.auditoriumName}}
+                                </div>                                
+                            </div>                            
+                            
+                        </ion-item>
+                    </ion-list>
+                </div>
+            </div>            
         </div>
     </ion-content>
 </ion-view>
